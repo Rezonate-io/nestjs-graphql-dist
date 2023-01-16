@@ -9,36 +9,29 @@ import { ResolveTypeFn } from '../interfaces/resolve-type-fn.interface';
 /**
  * Interface defining options that can be passed to `createUnionType` function.
  */
-export interface UnionOptions<
-  T extends readonly Type<unknown>[] = Type<unknown>[],
-> {
-  /**
-   * Name of the union.
-   */
-  name?: string;
-  /**
-   * Description of the union.
-   */
-  description?: string;
-  /**
-   * Custom implementation of the "resolveType" function.
-   */
-  resolveType?: ResolveTypeFn<any, any>;
-  /**
-   * Types that the union consist of.
-   */
-  types: () => T;
+export interface UnionOptions<T extends readonly Type<unknown>[] = Type<unknown>[]> {
+    /**
+     * Name of the union.
+     */
+    name?: string;
+    /**
+     * Description of the union.
+     */
+    description?: string;
+    /**
+     * Custom implementation of the "resolveType" function.
+     */
+    resolveType?: ResolveTypeFn<any, any>;
+    /**
+     * Types that the union consist of.
+     */
+    types: () => T;
 }
-export declare type ArrayElement<ArrayType extends readonly unknown[]> =
-  ArrayType[number];
-export declare type Union<T extends readonly any[]> = InstanceType<
-  ArrayElement<T>
->;
+export declare type ArrayElement<ArrayType extends readonly unknown[]> = ArrayType[number];
+export declare type Union<T extends readonly any[]> = InstanceType<ArrayElement<T>>;
 /**
  * Creates a GraphQL union type composed of types references.
  * @param options
  */
-export declare function createUnionType<
-  T extends readonly Type<unknown>[] = Type<unknown>[],
->(options: UnionOptions<T>): Union<T>;
+export declare function createUnionType<T extends readonly Type<unknown>[] = Type<unknown>[]>(options: UnionOptions<T>): Union<T>;
 //# sourceMappingURL=create-union-type.factory.d.ts.map
