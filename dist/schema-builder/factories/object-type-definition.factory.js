@@ -64,6 +64,17 @@ let ObjectTypeDefinitionFactory = class ObjectTypeDefinitionFactory {
             return interfaces;
         };
     }
+    getRecursiveInterfaces(metadatas) {
+        if (!metadatas || !metadatas.length)
+            return [];
+        const interfaces = metadatas.reduce((prev, curr) => {
+            return [
+                ...prev,
+                ...(0, get_interfaces_array_util_1.getInterfacesArray)(curr.interfaces).map((it) => storages_1.TypeMetadataStorage.getInterfaceMetadataByTarget(it)),
+            ];
+        }, []);
+        return [...interfaces, ...this.getRecursiveInterfaces(interfaces)];
+    }
     generateFields(metadata, options, getParentType) {
         const prototype = Object.getPrototypeOf(metadata.target);
         metadata.properties.forEach(({ typeFn }) => this.orphanedReferenceRegistry.addToRegistryIfOrphaned(typeFn()));
@@ -71,9 +82,9 @@ let ObjectTypeDefinitionFactory = class ObjectTypeDefinitionFactory {
             let fields = {};
             let properties = [];
             if (metadata.interfaces) {
-                const implementedInterfaces = storages_1.TypeMetadataStorage.getInterfacesMetadata()
-                    .filter((it) => (0, get_interfaces_array_util_1.getInterfacesArray)(metadata.interfaces).includes(it.target))
-                    .map((it) => it.properties);
+                const implementedInterfaces = this.getRecursiveInterfaces([
+                    metadata,
+                ]).map((it) => it.properties);
                 implementedInterfaces.forEach((fields) => properties.push(...(fields || [])));
             }
             properties = properties.concat(metadata.properties);
