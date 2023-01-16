@@ -14,8 +14,7 @@ function getObjectOrInterfaceTypeNameIfExists(nameOrType) {
     const ctor = (0, resolvers_utils_1.getClassOrUndefined)(nameOrType);
     const objectMetadata = type_metadata_storage_1.TypeMetadataStorage.getObjectTypeMetadataByTarget(ctor);
     if (!objectMetadata) {
-        const interfaceTypesMetadata = type_metadata_storage_1.TypeMetadataStorage.getInterfacesMetadata();
-        const interfaceMetadata = interfaceTypesMetadata.find((type) => type.target === ctor);
+        const interfaceMetadata = type_metadata_storage_1.TypeMetadataStorage.getInterfacesMetadata().find((type) => type.target === ctor);
         if (!interfaceMetadata) {
             return;
         }
